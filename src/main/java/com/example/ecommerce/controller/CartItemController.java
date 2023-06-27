@@ -32,7 +32,7 @@ public class CartItemController {
     }
 
     // update employee rest api
-    @PutMapping("cart-item/{id}")
+    @PatchMapping("cart-item/{id}")
     public ResponseEntity<CartItem> updateCartItem(@PathVariable Long id, @RequestBody Quantity quantity){
         return cartItemService.updateCartItem(id, quantity.getQuantity());
     }
