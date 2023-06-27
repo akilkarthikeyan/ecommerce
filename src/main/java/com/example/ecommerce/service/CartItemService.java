@@ -29,6 +29,14 @@ public class CartItemService {
         return cartItemRepository.findAll();
     }
 
+    public ResponseEntity<CartItem> updateCartItem(Long cartItemId, int quantity) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).
+                orElseThrow(() -> new ResourceNotFoundException("CartItem does not exist with id: " + cartItemId));
+        cartItem.setQuantity(quantity);
+        CartItem updatedCartItem = cartItemRepository.save(cartItem);
+        return ResponseEntity.ok(updatedCartItem);
+    }
+
     public CartItem createCartItem(Long productId) {
         ProductItem productItem = productItemRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductItem does not exist with id: " + productId));
@@ -65,4 +73,6 @@ public class CartItemService {
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
+
+
 }
