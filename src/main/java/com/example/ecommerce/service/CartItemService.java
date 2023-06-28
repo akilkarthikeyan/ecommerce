@@ -65,4 +65,12 @@ public class CartItemService {
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
+
+    public ResponseEntity<CartItem> updateCartItem(Long cartItemId, int quantity) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).
+                orElseThrow(() -> new ResourceNotFoundException("CartItem does not exist with id: " + cartItemId));
+        cartItem.setQuantity(quantity);
+        CartItem updatedCartItem = cartItemRepository.save(cartItem);
+        return ResponseEntity.ok(updatedCartItem);
+    }
 }
