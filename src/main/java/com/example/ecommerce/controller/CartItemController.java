@@ -31,16 +31,6 @@ public class CartItemController {
         return cartItemService.createCartItem(productId);
     }
 
-    @PatchMapping("/cart-item/increase/{id}")
-    public ResponseEntity<CartItem> increaseCartItemQuantity(@PathVariable Long id) {
-        return cartItemService.increaseCartItemQuantity(id);
-    }
-
-    @PatchMapping("/cart-item/decrease/{id}")
-    public ResponseEntity<CartItem> decreaseCartItemQuantity(@PathVariable Long id) {
-        return cartItemService.decreaseCartItemQuantity(id);
-    }
-
     @DeleteMapping("/cart-item/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteCartItem(@PathVariable Long id) {
         return cartItemService.deleteCartItem(id);
