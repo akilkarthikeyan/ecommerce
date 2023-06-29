@@ -1,5 +1,6 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.ProductItem;
 import com.example.ecommerce.repository.ProductItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,16 @@ public class ProductItemService {
         return productItemRepository.findAll();
     }
 
+    public ProductItem getProductItem(Long productId) {
+        return productItemRepository.findById(productId).
+                orElseThrow(() -> new ResourceNotFoundException("ProductItem does not exist with productId: "+ productId));
+    }
+
     public ProductItem createProductItem(ProductItem productItem) {
         return productItemRepository.save(productItem);
+    }
+
+    public List<ProductItem> createProductItems(List<ProductItem> productItems) {
+        return productItemRepository.saveAll(productItems);
     }
 }

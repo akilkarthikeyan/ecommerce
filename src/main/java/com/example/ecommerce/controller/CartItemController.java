@@ -1,6 +1,6 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.Quantity;
+import com.example.ecommerce.dto.Quantity;
 import com.example.ecommerce.model.CartItem;
 import com.example.ecommerce.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,4 +41,8 @@ public class CartItemController {
         return cartItemService.updateCartItem(id, quantity.getQuantity());
     }
 
+    @DeleteMapping("/cart-items")
+    public ResponseEntity<Map<String, Boolean>> deleteAllCartItems() {
+        return cartItemService.deleteAllCartItems();
+    }
 }

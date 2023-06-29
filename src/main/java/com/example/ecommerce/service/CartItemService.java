@@ -7,6 +7,7 @@ import com.example.ecommerce.model.ProductItem;
 import com.example.ecommerce.repository.CartItemRepository;
 import com.example.ecommerce.repository.ProductItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class CartItemService {
     public CartItem createCartItem(Long productId) {
         ProductItem productItem = productItemRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductItem does not exist with id: " + productId));
-        CartItem cartItem = new CartItem(productItem.getId(), productItem);
+        CartItem cartItem = new CartItem(productItem.getProductId(), productItem);
         return cartItemRepository.save(cartItem);
     }
 
@@ -41,8 +42,7 @@ public class CartItemService {
                 .orElseThrow(() -> new ResourceNotFoundException("CartItem does not exist with id: " + id));
         cartItemRepository.delete(cartItem);
         Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 
     public ResponseEntity<CartItem> updateCartItem(Long cartItemId, int quantity) {
@@ -51,5 +51,11 @@ public class CartItemService {
         cartItem.setQuantity(quantity);
         CartItem updatedCartItem = cartItemRepository.save(cartItem);
         return ResponseEntity.ok(updatedCartItem);
+    }
+
+    public ResponseEntity<Map<String, Boolean>> deleteAllCartItems() {
+        cartItemRepository.deleteAll();
+        Map<String, Boolean> response = new HashMap<>();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 }
