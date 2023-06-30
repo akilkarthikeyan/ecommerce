@@ -26,9 +26,9 @@ public class CartItemController {
         return cartItemService.getAllCartItems();
     }
 
-    @PostMapping("/cart-item/{id}")
-    public CartItem createCartItem(@PathVariable Long id) {
-        return cartItemService.createCartItem(id);
+    @PostMapping("/cart-item/{productId}")
+    public CartItem createCartItem(@PathVariable Long productId) {
+        return cartItemService.createCartItem(productId);
     }
 
     @PatchMapping("/cart-item/{id}")

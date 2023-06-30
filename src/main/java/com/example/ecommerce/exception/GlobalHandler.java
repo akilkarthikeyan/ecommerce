@@ -8,7 +8,7 @@ public class GlobalHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleInternalServerError(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Internal server error occurred");
+                .body("Internal server error occurred" + e.getMessage());
     }
 
 }

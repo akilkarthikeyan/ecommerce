@@ -1,9 +1,11 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.exception.ResourceNotFoundException;
+import com.example.ecommerce.exception.InvalidRequestException;
 import com.example.ecommerce.model.ProductItem;
 import com.example.ecommerce.repository.ProductItemRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +23,29 @@ public class ProductItemService {
         return productItemRepository.findAll();
     }
 
-    public ProductItem getProductItem(Long id) {
-        return productItemRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("ProductItem does not exist with productId: "+ id));
+    public List<ProductItem> searchProductItems(String title, Float floorPrice, Float ceilPrice) {
+        Specification<ProductItem> productItemSpecification = Specification.where(null);
+
+        if(floorPrice == null)
+            floorPrice = 0.0F;
+
+        if(ceilPrice == null)
+            ceilPrice = Float.MAX_VALUE;
+
+        //title
+        if(title != null) {
+            productItemSpecification = productItemSpecification.and(ProductItemSpecifications.hasTitleLike(title));
+        }
+
+        if(floorPrice <= ceilPrice) {
+            productItemSpecification = productItemSpecification.and(ProductItemSpecifications.hasPriceGreaterThanOrEqualTo(floorPrice));
+            productItemSpecification = productItemSpecification.and(ProductItemSpecifications.hasPriceLessThanOrEqualTo(ceilPrice));
+        }
+        else {
+            throw new InvalidRequestException("floorPrice " + floorPrice + " has to be lesser than or equal to ceilPrice " + ceilPrice);
+        }
+
+        return productItemRepository.findAll(productItemSpecification);
     }
 
     public ProductItem createProductItem(ProductItem productItem) {
@@ -33,4 +55,25 @@ public class ProductItemService {
     public List<ProductItem> createProductItems(List<ProductItem> productItems) {
         return productItemRepository.saveAll(productItems);
     }
+
 }
+class ProductItemSpecifications {
+    public static Specification<ProductItem> hasTitleLike(String title) {
+        return (root, query, criteriaBuilder) -> {
+            String lowerCaseTitle = "%" + title.toLowerCase() + "%";
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), lowerCaseTitle);
+        };
+    }
+
+    public static Specification<ProductItem> hasPriceLessThanOrEqualTo(Float ceilPrice) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.lessThanOrEqualTo(root.get("price"), ceilPrice);
+    }
+
+    public static Specification<ProductItem> hasPriceGreaterThanOrEqualTo(Float floorPrice) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(root.get("price"), floorPrice);
+    }
+
+}
+

@@ -23,9 +23,11 @@ public class ProductItemController {
         return productItemService.getAllProductItems();
     }
 
-    @GetMapping("/product-item/{id}")
-    public ProductItem getProduct(@PathVariable Long id) {
-        return productItemService.getProductItem(id);
+    @GetMapping("/product-items/search")
+    public List<ProductItem> searchProductItems(@RequestParam(value = "title", required = false) String title,
+                                         @RequestParam(value = "floorPrice", required = false) Float floorPrice,
+                                         @RequestParam(value = "ceilPrice", required = false) Float ceilPrice) {
+        return productItemService.searchProductItems(title, floorPrice, ceilPrice);
     }
 
     @PostMapping("/product-item")
