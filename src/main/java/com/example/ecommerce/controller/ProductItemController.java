@@ -23,9 +23,9 @@ public class ProductItemController {
         return productItemService.getAllProductItems();
     }
 
-    @GetMapping("/product-item/{productId}")
-    public ProductItem getProduct(@PathVariable Long productId) {
-        return productItemService.getProductItem(productId);
+    @GetMapping("/product-item/{id}")
+    public ProductItem getProduct(@PathVariable Long id) {
+        return productItemService.getProductItem(id);
     }
 
     @PostMapping("/product-item")

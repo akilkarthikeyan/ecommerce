@@ -1,5 +1,8 @@
 package com.example.ecommerce.model;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
@@ -10,17 +13,17 @@ public class Order {
 
     private String name;
 
+    @CreationTimestamp
+    private LocalDateTime orderedAt;
+
     private String address;
 
     private String phone;
 
-    private float total;
-
-    public Order(String name, String address, String phone, float total) {
+    public Order(String name, String address, String phone) {
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.total = total;
     }
 
     public Order() {
@@ -59,11 +62,11 @@ public class Order {
         this.phone = phone;
     }
 
-    public float getTotal() {
-        return total;
+    public LocalDateTime getOrderedAt() {
+        return orderedAt;
     }
 
-    public void setTotal(float total) {
-        this.total = total;
+    public void setOrderedAt(LocalDateTime orderedAt) {
+        this.orderedAt = orderedAt;
     }
 }

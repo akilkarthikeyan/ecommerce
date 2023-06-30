@@ -13,7 +13,7 @@ public class OrderItem {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "product", referencedColumnName = "productId")
+    @JoinColumn(name = "product", referencedColumnName = "id")
     private ProductItem productItem;
 
     private int quantity;

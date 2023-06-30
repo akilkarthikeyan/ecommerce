@@ -26,19 +26,19 @@ public class CartItemController {
         return cartItemService.getAllCartItems();
     }
 
-    @PostMapping("/cart-item/{productId}")
-    public CartItem createCartItem(@PathVariable Long productId) {
-        return cartItemService.createCartItem(productId);
-    }
-
-    @DeleteMapping("/cart-item/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteCartItem(@PathVariable Long id) {
-        return cartItemService.deleteCartItem(id);
+    @PostMapping("/cart-item/{id}")
+    public CartItem createCartItem(@PathVariable Long id) {
+        return cartItemService.createCartItem(id);
     }
 
     @PatchMapping("/cart-item/{id}")
     public ResponseEntity<CartItem> updateCartItem(@PathVariable Long id, @RequestBody Quantity quantity){
         return cartItemService.updateCartItem(id, quantity.getQuantity());
+    }
+
+    @DeleteMapping("/cart-item/{id}")
+    public ResponseEntity<Map<String, Boolean>> deleteCartItem(@PathVariable Long id) {
+        return cartItemService.deleteCartItem(id);
     }
 
     @DeleteMapping("/cart-items")

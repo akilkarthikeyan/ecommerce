@@ -5,17 +5,13 @@ import java.util.List;
 public class OrderRequest {
     private String name;
     private String address;
-
     private String phone;
-
-    private float total;
     private List<Product> products;
 
-    public OrderRequest(String name, String address, String phone, float total, List<Product> products) {
+    public OrderRequest(String name, String address, String phone, List<Product> products) {
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.total = total;
         this.products = products;
     }
 
@@ -49,13 +45,5 @@ public class OrderRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public float getTotal() {
-        return total;
-    }
-
-    public void setTotal(float total) {
-        this.total = total;
     }
 }

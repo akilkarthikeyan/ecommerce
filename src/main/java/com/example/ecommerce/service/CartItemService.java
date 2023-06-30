@@ -1,6 +1,5 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.exception.InvalidRequestException;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.CartItem;
 import com.example.ecommerce.model.ProductItem;
@@ -30,11 +29,19 @@ public class CartItemService {
         return cartItemRepository.findAll();
     }
 
-    public CartItem createCartItem(Long productId) {
-        ProductItem productItem = productItemRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductItem does not exist with id: " + productId));
-        CartItem cartItem = new CartItem(productItem.getProductId(), productItem);
+    public CartItem createCartItem(Long id) {
+        ProductItem productItem = productItemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductItem does not exist with id: " + id));
+        CartItem cartItem = new CartItem(productItem.getId(), productItem);
         return cartItemRepository.save(cartItem);
+    }
+
+    public ResponseEntity<CartItem> updateCartItem(Long id, int quantity) {
+        CartItem cartItem = cartItemRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("CartItem does not exist with id: " + id));
+        cartItem.setQuantity(quantity);
+        CartItem updatedCartItem = cartItemRepository.save(cartItem);
+        return ResponseEntity.ok(updatedCartItem);
     }
 
     public ResponseEntity<Map<String, Boolean>> deleteCartItem(Long id) {
@@ -43,14 +50,6 @@ public class CartItemService {
         cartItemRepository.delete(cartItem);
         Map<String, Boolean> response = new HashMap<>();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
-    }
-
-    public ResponseEntity<CartItem> updateCartItem(Long cartItemId, int quantity) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId).
-                orElseThrow(() -> new ResourceNotFoundException("CartItem does not exist with id: " + cartItemId));
-        cartItem.setQuantity(quantity);
-        CartItem updatedCartItem = cartItemRepository.save(cartItem);
-        return ResponseEntity.ok(updatedCartItem);
     }
 
     public ResponseEntity<Map<String, Boolean>> deleteAllCartItems() {

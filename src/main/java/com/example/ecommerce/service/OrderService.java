@@ -1,8 +1,9 @@
 package com.example.ecommerce.service;
 
 import com.example.ecommerce.dto.OrderRequest;
+import com.example.ecommerce.dto.OrderResponse;
 import com.example.ecommerce.dto.Product;
-import com.example.ecommerce.exception.MissingDataException;
+import com.example.ecommerce.dto.ProductDescription;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.Order;
 import com.example.ecommerce.model.OrderItem;
@@ -30,26 +31,26 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
-    public List<OrderRequest> getAllOrders() {
-        List <OrderRequest> allOrders = new ArrayList<>();
+    public List<OrderResponse> getAllOrders() {
+        List <OrderResponse> allOrders = new ArrayList<>();
         List <Order> orders = orderRepository.findAll();
         for(Order order: orders) {
             Long orderId = order.getOrderId();
-            List<Product> products = orderItemRepository.getOrderItemsWithId(orderId);
-            allOrders.add(new OrderRequest(order.getName(), order.getAddress(), order.getPhone(), order.getTotal(), products));
+            List<ProductDescription> productDescriptions = orderItemRepository.getOrderItemsWithId(orderId);
+            allOrders.add(new OrderResponse(order.getOrderId(), order.getName(), order.getAddress(), order.getPhone(), order.getOrderedAt(), productDescriptions));
         }
         return allOrders;
     }
 
     public Order createOrder(OrderRequest orderRequest) {
-        Order order = new Order(orderRequest.getName(), orderRequest.getAddress(), orderRequest.getPhone(), orderRequest.getTotal());
+        Order order = new Order(orderRequest.getName(), orderRequest.getAddress(), orderRequest.getPhone());
         Order createdOrder = orderRepository.save(order);
         List<OrderItem> orderItems = new ArrayList<>();
         for(Product product: orderRequest.getProducts()) {
             ProductItem productItem = null;
             try {
-                productItem = productItemRepository.findById(product.getProductId()).
-                        orElseThrow(() -> new ResourceNotFoundException("ProductItem not available with id: " + product.getProductId()));
+                productItem = productItemRepository.findById(product.getId()).
+                        orElseThrow(() -> new ResourceNotFoundException("ProductItem not available with id: " + product.getId()));
             }
             catch (ResourceNotFoundException e) {
                 orderRepository.delete(createdOrder);

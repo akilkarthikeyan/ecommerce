@@ -4,20 +4,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Product {
-    private Long productId;
+    private Long id;
     private int quantity;
 
-    public Product(Long productId, int quantity) {
-        this.productId = productId;
+
+
+    public Product(Long id, int quantity) {
+        this.id = id;
         this.quantity = quantity;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getId() {
+        return id;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getQuantity() {
