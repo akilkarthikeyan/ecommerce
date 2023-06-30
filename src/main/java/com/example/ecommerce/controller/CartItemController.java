@@ -1,6 +1,6 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.Quantity;
+import com.example.ecommerce.dto.Quantity;
 import com.example.ecommerce.model.CartItem;
 import com.example.ecommerce.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,9 @@ public class CartItemController {
         return cartItemService.getAllCartItems();
     }
 
-    @PostMapping("/cart-item/{productId}")
-    public CartItem createCartItem(@PathVariable Long productId) {
-        return cartItemService.createCartItem(productId);
-    }
-
-    @DeleteMapping("/cart-item/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteCartItem(@PathVariable Long id) {
-        return cartItemService.deleteCartItem(id);
+    @PostMapping("/cart-item/{id}")
+    public CartItem createCartItem(@PathVariable Long id) {
+        return cartItemService.createCartItem(id);
     }
 
     @PatchMapping("/cart-item/{id}")
@@ -41,4 +36,13 @@ public class CartItemController {
         return cartItemService.updateCartItem(id, quantity.getQuantity());
     }
 
+    @DeleteMapping("/cart-item/{id}")
+    public ResponseEntity<Map<String, Boolean>> deleteCartItem(@PathVariable Long id) {
+        return cartItemService.deleteCartItem(id);
+    }
+
+    @DeleteMapping("/cart-items")
+    public ResponseEntity<Map<String, Boolean>> deleteAllCartItems() {
+        return cartItemService.deleteAllCartItems();
+    }
 }

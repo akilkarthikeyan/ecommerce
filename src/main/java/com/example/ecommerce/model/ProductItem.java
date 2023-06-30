@@ -7,16 +7,14 @@ import jakarta.persistence.*;
 public class ProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column(name = "title")
+
     private String title;
-    @Column(name = "price")
+
     private float price;
-    @Column(name = "description")
+
     private String description;
 
-    @Column(name = "image")
     private String image;
 
     public ProductItem() {
@@ -33,8 +31,8 @@ public class ProductItem {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(Long productId) {
+        this.id = productId;
     }
 
     public String getTitle() {

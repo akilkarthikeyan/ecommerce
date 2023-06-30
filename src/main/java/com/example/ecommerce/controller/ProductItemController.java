@@ -23,8 +23,18 @@ public class ProductItemController {
         return productItemService.getAllProductItems();
     }
 
+    @GetMapping("/product-item/{id}")
+    public ProductItem getProduct(@PathVariable Long id) {
+        return productItemService.getProductItem(id);
+    }
+
     @PostMapping("/product-item")
     public ProductItem createProductItem(@RequestBody ProductItem productItem) {
         return productItemService.createProductItem(productItem);
+    }
+
+    @PostMapping("/product-items")
+    public List<ProductItem> createProductItems(@RequestBody List<ProductItem> productItems) {
+        return productItemService.createProductItems(productItems);
     }
 }
