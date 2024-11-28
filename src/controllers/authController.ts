@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import { userSignUpSchema } from '../models/userSchemas';
+import { userLoginSchema } from '../models/userSchemas';
 import logger from '../logger';
-import * as userService from '../services/userService';
+import * as authService from '../services/authService';
 
-export async function createUser(req: Request, res: Response): Promise<void> {
+export async function loginUser(req: Request, res: Response): Promise<void> {
     // validate
     let user;
     try {
-        user = userSignUpSchema.parse(req.body);
+        user = userLoginSchema.parse(req.body);
     }
     catch (err: any) {
         const errorMessages = err.errors.map((error: any) => `${error.message} at ${error.path.join('.')}`);
@@ -16,13 +16,14 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         return;
     }
     try {
-        const newUser = await userService.createUser(user);
-        res.status(201).json({ message: "User created successfully", data: newUser });
+        const token = await authService.loginUser(user);
+        res.status(200).json({ message: "User logged in successfully", data: { accessToken: token } });
         return;
     }
     catch (err: any) {
         logger.error(err);
-        res.status(500).json({ message: "An unexpected error occurred" });
+        res.status(401).json({ message: "Unauthorized" });
         return;
     }
 }
+
