@@ -9,6 +9,7 @@ export function authenticateToken(req: CustomRequest, res: Response, next: NextF
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         if (!token) {
+            logger.error("Token empty");
             res.status(401).json({ message: "Unauthorized" });
             return;
         }
@@ -18,6 +19,7 @@ export function authenticateToken(req: CustomRequest, res: Response, next: NextF
             next();
         }
         catch (err: any) {
+            logger.error(err);
             res.status(403).json({ message: "Forbidden" });
             return;
         }
