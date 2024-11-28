@@ -21,8 +21,8 @@ app.use(express.json());
 
 // Routes
 app.use("/api/users", userRoutes);
-app.use("/api/products", productRoutes);
 app.use("/api", authRoutes);
+app.use("/api/products", productRoutes);
 
 // Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));

@@ -12,7 +12,7 @@ export const userLoginSchema = z.object({
 });
 
 export const userSchema = z.object({
-    id: z.string(),
+    id: z.number(),
     name: z.string(),
     email: z.string().email(),
     role: z.string(),
