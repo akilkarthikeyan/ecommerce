@@ -1,13 +1,13 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import logger from "./config/logger";
-import swaggerUi from "swagger-ui-express";
-import swaggerDocs from "./config/swagger";
-import { pool } from "./config/db";
+import logger from "./utils/logger";
+import { swaggerDocs, swaggerUi } from "./swagger";
+import { pool } from "./db";
 
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
+import authRoutes from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -20,11 +20,19 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/users", userRoutes);
-app.use("/products", productRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api", authRoutes);
 
 // Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+app.get("/", (req, res) => {
+    res.send({
+        message: "Welcome to the E-Commerce API",
+        documentation: "Swagger documentation is available at /api-docs"
+    });
+});
 
 // Start the server
 app.listen(PORT, async () => {

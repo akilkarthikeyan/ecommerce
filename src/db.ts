@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 import path from 'path';
 
 const envFile = ".env";
-dotenv.config({ path: path.resolve(__dirname, `../../${envFile}`) });
+dotenv.config({ path: path.resolve(__dirname, `../${envFile}`) });
 
 const dbConfig = {
     host: process.env.DB_HOST,

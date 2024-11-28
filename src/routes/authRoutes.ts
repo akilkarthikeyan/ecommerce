@@ -1,15 +1,15 @@
 import { Router } from "express";
-import * as userController from "../controllers/userController";
+import * as authController from "../controllers/authController";
 
 const router = Router();
 
 /**
  * @swagger
- * /api/users:
+ * /api/login:
  *   post:
- *     summary: Create a new user
+ *     summary: Login as a user
  *     tags:
- *       - Users
+ *       - Login
  *     requestBody:
  *       required: true
  *       content:
@@ -17,19 +17,16 @@ const router = Router();
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
  *               email:
- *                 type: string  
+ *                 type: string
  *               password:
- *                 type: string 
+ *                 type: string
  *             required:
- *               - name
- *               - email
- *               - password
+ *                 - email
+ *                 - password
  *     responses:
- *       201:
- *         description: User created successfully
+ *       200:
+ *         description: User logged in successfully
  *         content:
  *           application/json:
  *             schema:
@@ -40,24 +37,25 @@ const router = Router();
  *                 data:
  *                   type: object
  *       400:
- *         description: Bad Request
+ *         description: Bad request
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message: 
+ *                 message:
  *                   type: string
- *       500:
- *         description: Internal Server Error
+ *       401:
+ *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message: 
+ *                 message:
  *                   type: string
+ *         
  */
-router.post("/", userController.createUser);
+router.post("/login", authController.loginUser);
 
 export default router;
