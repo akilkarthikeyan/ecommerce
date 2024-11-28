@@ -1,5 +1,5 @@
 import { pool } from '../db';
-import { hashPassword } from '../auth';
+import { hashPassword } from '../utils/auth';
 import { UserSignUp, User } from '../models/userSchemas';
 
 export async function createUser(user: UserSignUp): Promise<User> {

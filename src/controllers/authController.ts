@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userLoginSchema } from '../models/userSchemas';
-import logger from '../logger';
+import logger from '../utils/logger';
 import * as authService from '../services/authService';
 
 export async function loginUser(req: Request, res: Response): Promise<void> {

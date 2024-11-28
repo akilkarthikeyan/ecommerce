@@ -1,6 +1,6 @@
 import { User, UserLogin } from "../models/userSchemas";
 import { pool } from "../db";
-import { comparePassword, generateToken } from "../auth";
+import { comparePassword, generateToken } from "../utils/auth";
 
 export async function loginUser(user: UserLogin): Promise<string> {
     try {

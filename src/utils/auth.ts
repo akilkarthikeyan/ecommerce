@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { User } from './models/userSchemas';
+import { User } from '../models/userSchemas';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -15,7 +15,15 @@ export async function comparePassword(password: string, hash: string): Promise<b
     return bcrypt.compare(password, hash);
 }
 
-export function generateToken(user: User) {
+export function generateToken(user: User): string {
     const payload = { id: user.id, role: user.role };
     return jwt.sign(payload, secretKey, { expiresIn: "4h" });
+}
+
+export function verifyToken(token: string): User {
+    try {
+        return jwt.verify(token, secretKey) as User;
+    } catch (err) {
+        throw new Error('Invalid token');
+    }
 }

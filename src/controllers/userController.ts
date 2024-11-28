@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userSignUpSchema } from '../models/userSchemas';
-import logger from '../logger';
+import logger from '../utils/logger';
 import * as userService from '../services/userService';
 
 export async function createUser(req: Request, res: Response): Promise<void> {
