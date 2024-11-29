@@ -20,7 +20,7 @@ export async function addToCart(req: Request, res: Response): Promise<void> {
         return;
     }
     try {
-        const added = cartServive.addToCart(userId, cartItem.id, cartItem.quantity);
+        const added = await cartServive.addToCart(userId, cartItem.id, cartItem.quantity);
         if(!added) {
             res.status(404).json({ message: "Product not found" });
             return;
