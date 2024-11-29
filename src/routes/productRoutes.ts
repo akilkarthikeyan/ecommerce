@@ -1,7 +1,6 @@
 import { Router } from "express";
 import * as productController from "../controllers/productController";
 import { RequestHandler } from "express";
-import CustomRequest from "../models/customRequestSchema";
 import { authorize, authenticateToken } from "../middlewares/auth";
 
 const router = Router();
@@ -13,6 +12,13 @@ const router = Router();
  *     summary: Retrieve a list of products
  *     tags:
  *       - Products
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Search term to filter products by name or description
+ *         required: false
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: A list of products
@@ -108,5 +114,174 @@ router.get("/", productController.getAllProducts);
  *                   type: string
  */
 router.post("/", authenticateToken as RequestHandler, authorize("admin") as RequestHandler, productController.createProduct);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   put:
+ *     summary: Update an existing product
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the product to update
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               stock:
+ *                 type: number
+ *             required:
+ *               - name
+ *               - price
+ *               - stock
+ *     responses:
+ *       200:
+ *         description: Product updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+router.put("/:id", authenticateToken as RequestHandler, authorize("admin") as RequestHandler, productController.updateProduct);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     summary: Delete a product
+ *     tags:
+ *       - Products
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the product to delete
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+router.delete("/:id", authenticateToken as RequestHandler, authorize("admin") as RequestHandler, productController.deleteProduct);
 
 export default router;

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import logger from "./utils/logger";
 import { swaggerDocs, swaggerUi } from "./swagger";
 import { pool } from "./db";
+import redisClient from "./cache";
 
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
@@ -37,11 +38,5 @@ app.get("/", (req, res) => {
 // Start the server
 app.listen(PORT, async () => {
     logger.info(`Server is running on http://localhost:${PORT}`);
-    try {
-        await pool.query('SELECT 1');
-        logger.info('Database connection established successfully');
-    }
-    catch (err: any) {
-        logger.error('Unable to connect to the database:', err);
-    }
 });
+
