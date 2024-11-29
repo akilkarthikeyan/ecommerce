@@ -6,7 +6,7 @@ const router = Router();
 
 /**
  * @swagger
- * /cart/add:
+ * /api/cart/add:
  *   post:
  *     summary: Add item to cart
  *     tags: [Cart]
