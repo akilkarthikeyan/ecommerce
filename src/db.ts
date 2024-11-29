@@ -1,6 +1,7 @@
 import mysql from 'mysql2/promise';
 import * as dotenv from 'dotenv';
 import path from 'path';
+import logger from './utils/logger';
 
 const envFile = ".env";
 dotenv.config({ path: path.resolve(__dirname, `../${envFile}`) });
@@ -18,5 +19,18 @@ const dbConfig = {
 };
 
 const pool = mysql.createPool(dbConfig);
+
+// Function to test DB connection
+const testDBConnection = async () => {
+    try {
+        const [rows] = await pool.query('SELECT 1');
+        logger.info('Database connection established successfully');
+    } catch (err: any) {
+        logger.error('Unable to connect to the database: ' + err);
+        process.exit(1);
+    }
+};
+
+testDBConnection();
 
 export { pool };

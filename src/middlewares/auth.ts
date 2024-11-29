@@ -1,16 +1,14 @@
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/auth';
 import { User } from '../models/userSchemas';
-import CustomRequest from '../models/customRequestSchema';
 import logger from '../utils/logger';
 
-export function authenticateToken(req: CustomRequest, res: Response, next: NextFunction): void {
+export function authenticateToken(req: Request, res: Response, next: NextFunction): void {
     try {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         if (!token) {
-            logger.error("Token empty");
-            res.status(401).json({ message: "Unauthorized" });
+            res.status(401).json({ message: "Token is required for authentication" });
             return;
         }
         try {
@@ -19,8 +17,7 @@ export function authenticateToken(req: CustomRequest, res: Response, next: NextF
             next();
         }
         catch (err: any) {
-            logger.error(err);
-            res.status(403).json({ message: "Forbidden" });
+            res.status(401).json({ message: "Invalid token" });
             return;
         }
     }
@@ -28,5 +25,15 @@ export function authenticateToken(req: CustomRequest, res: Response, next: NextF
         logger.error(err);
         res.status(500).json({ message: "An unexpected error occurred" });
         return;
+    }
+}
+
+export function authorize(role: string) {
+    return function (req: Request, res: Response, next: NextFunction) {
+        if (req.user.role !== role) {
+            res.status(403).json({ message: "You are not permitted to perform this action" });
+            return;
+        }
+        next();
     }
 }

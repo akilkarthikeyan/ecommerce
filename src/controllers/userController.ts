@@ -11,8 +11,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
     }
     catch (err: any) {
         const errorMessages = err.errors.map((error: any) => `${error.message} at ${error.path.join('.')}`);
-        logger.error(errorMessages.join(', '));
-        res.status(400).json({ message: "All fields must be valid and are required" });
+        res.status(400).json({ message: errorMessages.join(', ') });
         return;
     }
     try {

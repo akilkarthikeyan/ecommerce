@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { userLoginSchema } from '../models/userSchemas';
-import logger from '../utils/logger';
 import * as authService from '../services/authService';
 
 export async function loginUser(req: Request, res: Response): Promise<void> {
@@ -11,8 +10,7 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
     }
     catch (err: any) {
         const errorMessages = err.errors.map((error: any) => `${error.message} at ${error.path.join('.')}`);
-        logger.error(errorMessages.join(', '));
-        res.status(400).json({ message: "All fields must be valid and are required" });
+        res.status(400).json({ message: errorMessages.join(', ') });
         return;
     }
     try {
@@ -21,8 +19,7 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
         return;
     }
     catch (err: any) {
-        logger.error(err);
-        res.status(401).json({ message: "Unauthorized" });
+        res.status(401).json({ message: err.message });
         return;
     }
 }

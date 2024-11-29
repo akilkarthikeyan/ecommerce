@@ -4,10 +4,12 @@ import dotenv from "dotenv";
 import logger from "./utils/logger";
 import { swaggerDocs, swaggerUi } from "./swagger";
 import { pool } from "./db";
+import redisClient from "./cache";
 
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
 import authRoutes from "./routes/authRoutes";
+import cartRoutes from "./routes/cartRoutes";
 
 dotenv.config();
 
@@ -21,8 +23,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/users", userRoutes);
-app.use("/api/products", productRoutes);
 app.use("/api", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 // Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
@@ -37,11 +40,5 @@ app.get("/", (req, res) => {
 // Start the server
 app.listen(PORT, async () => {
     logger.info(`Server is running on http://localhost:${PORT}`);
-    try {
-        await pool.query('SELECT 1');
-        logger.info('Database connection established successfully');
-    }
-    catch (err: any) {
-        logger.error('Unable to connect to the database:', err);
-    }
 });
+
