@@ -29,7 +29,7 @@ const router = Router();
  *               - id
  *               - quantity 
  *     responses:
- *       200:
+ *       201:
  *         description: Item added to cart successfully
  *         content:
  *           application/json:
