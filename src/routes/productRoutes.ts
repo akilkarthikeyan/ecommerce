@@ -33,6 +33,15 @@ const router = Router();
  *                   type: array
  *                   items:
  *                     type: object
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 router.get("/", productController.getAllProducts);
 
@@ -113,7 +122,7 @@ router.get("/", productController.getAllProducts);
  *                 message:
  *                   type: string
  */
-router.post("/", authenticateToken as RequestHandler, authorize("admin") as RequestHandler, productController.createProduct);
+router.post("/", authenticateToken, authorize("admin"), productController.createProduct);
 
 /**
  * @swagger
@@ -130,7 +139,7 @@ router.post("/", authenticateToken as RequestHandler, authorize("admin") as Requ
  *         description: ID of the product to update
  *         required: true
  *         schema:
- *           type: string
+ *           type: number
  *     requestBody:
  *       required: true
  *       content:
@@ -225,7 +234,7 @@ router.put("/:id", authenticateToken as RequestHandler, authorize("admin") as Re
  *         description: ID of the product to delete
  *         required: true
  *         schema:
- *           type: string
+ *           type: number
  *     responses:
  *       200:
  *         description: Product deleted successfully
@@ -282,6 +291,6 @@ router.put("/:id", authenticateToken as RequestHandler, authorize("admin") as Re
  *                 message:
  *                   type: string
  */
-router.delete("/:id", authenticateToken as RequestHandler, authorize("admin") as RequestHandler, productController.deleteProduct);
+router.delete("/:id", authenticateToken, authorize("admin"), productController.deleteProduct);
 
 export default router;

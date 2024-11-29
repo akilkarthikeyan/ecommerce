@@ -1,10 +1,9 @@
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/auth';
 import { User } from '../models/userSchemas';
-import CustomRequest from '../models/customRequestSchema';
 import logger from '../utils/logger';
 
-export function authenticateToken(req: CustomRequest, res: Response, next: NextFunction): void {
+export function authenticateToken(req: Request, res: Response, next: NextFunction): void {
     try {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
@@ -30,7 +29,7 @@ export function authenticateToken(req: CustomRequest, res: Response, next: NextF
 }
 
 export function authorize(role: string) {
-    return function (req: CustomRequest, res: Response, next: NextFunction) {
+    return function (req: Request, res: Response, next: NextFunction) {
         if (req.user.role !== role) {
             res.status(403).json({ message: "You are not permitted to perform this action" });
             return;
