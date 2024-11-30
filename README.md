@@ -1,6 +1,6 @@
 # E-Commerce API
 
-This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It provides endpoints for managing users, products, and shopping carts.
+This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It provides endpoints for managing users, products, and shopping carts (based on https://roadmap.sh/projects/ecommerce-api).
 
 ## Features
 
