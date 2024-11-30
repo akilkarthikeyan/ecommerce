@@ -11,6 +11,7 @@ This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It
 - Checkout process with Stripe integration
 - API documentation with Swagger
 - Caching with Redis
+- Logging with Winston
 
 ## Prerequisites
 
