@@ -24,8 +24,8 @@ This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/akilkarthikeyan/ecommerce.git
-    cd ecommerce
+    git clone https://github.com/yourusername/ecommerce-api.git
+    cd ecommerce-api
     ```
 
 2. **Install dependencies:**
@@ -51,8 +51,6 @@ This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It
 
 4. **Set up the database:**
 
-    - Create the database and tables by running the SQL script in `db_scripts/schema.sql`:
-     
     ```sh
     mysql -u your_db_user -p your_db_name < db_scripts/schema.sql
     ```
@@ -66,6 +64,28 @@ This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It
 6. **Access the API documentation:**
 
     Open your browser and navigate to `http://localhost:3000/api-docs` to view the Swagger documentation.
+
+## API Endpoints
+
+### User Endpoints
+
+- **POST /api/users**: Register a new user
+- **POST /api/users/login**: Login a user and get a JWT token
+
+### Product Endpoints
+
+- **GET /api/products**: Get a list of all products
+- **GET /api/products?search=searchTerm**: Get list of products with name, descirption or category matching 'searchTerm'
+- **POST /api/products**: Create a new product (requires admin role)
+- **PUT /api/products/:id**: Update a product (requires admin role)
+- **DELETE /api/products/:id**: Delete a product (requires admin role)
+
+### Cart Endpoints
+
+- **GET /api/cart**: Get the current user's cart
+- **POST /api/cart/add**: Add an item to the cart
+- **DELETE /api/cart/remove/:id**: Remove an item from the cart
+- **POST /api/cart/checkout**: Process a checkout with Stripe
 
 ## Scripts
 
