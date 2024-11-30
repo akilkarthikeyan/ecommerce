@@ -24,8 +24,8 @@ This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/yourusername/ecommerce-api.git
-    cd ecommerce-api
+    git clone https://github.com/akilkarthikeyan/ecommerce.git
+    cd ecommerce
     ```
 
 2. **Install dependencies:**
