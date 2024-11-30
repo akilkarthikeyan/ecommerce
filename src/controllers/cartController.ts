@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { cartItemSchema, CartItem } from "../models/cartItemSchema";
+import { cartItemSchema } from "../models/cartItemSchema";
 import * as cartServive from "../services/cartService";
 import logger from "../utils/logger";
 
@@ -25,7 +25,7 @@ export async function addToCart(req: Request, res: Response): Promise<void> {
             res.status(404).json({ message: "Product not found" });
             return;
         }
-        res.status(201).json({ message: "Item added to cart successfully" });
+        res.status(200).json({ message: "Item added to cart successfully" });
         return;
     }
     catch (err: any) {
@@ -35,4 +35,62 @@ export async function addToCart(req: Request, res: Response): Promise<void> {
     }
 }
 
+export async function removeFromCart(req: Request, res: Response): Promise<void> {
+    if (!req.user) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+    const userId = req.user.id;
+    const productId = Number(req.params.id);
+    try {
+        const removed = await cartServive.removeFromCart(userId, productId);
+        if(!removed) {
+            res.status(404).json({ message: "Product not found" });
+            return;
+        }
+        res.status(200).json({ message: "Item removed from cart successfully" });
+        return;
+    }
+    catch (err: any) {
+        logger.error(err);
+        res.status(500).json({ message: "An unexpected error occurred" });
+        return;
+    }
+}
+
+export async function getCart(req: Request, res: Response): Promise<void> {
+    if (!req.user) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+    const userId = req.user.id;
+    try {
+        const cart = await cartServive.getCart(userId);
+        const totalPrice = cartServive.calculateTotal(cart);
+        res.status(200).json({message: "Cart retrieved successfully", data: {cart, total_price: totalPrice }});
+        return;
+    }
+    catch (err: any) {
+        logger.error(err);
+        res.status(500).json({ message: "An unexpected error occurred" });
+        return;
+    }
+}
+
+export async function checkout(req: Request, res: Response): Promise<void> {
+    // validate
+    if (!req.user) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+    const userId = req.user.id;
+    try {
+        const url = await cartServive.checkout(userId);
+        res.status(200).json({ message: "Checkout successful", data: { url } });
+    }
+    catch (err: any) {
+        logger.error(err);
+        res.status(500).json({ message: "An unexpected error occurred" });
+    }
+}
 

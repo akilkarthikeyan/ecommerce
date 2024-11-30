@@ -3,8 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import logger from "./utils/logger";
 import { swaggerDocs, swaggerUi } from "./swagger";
-import { pool } from "./db";
-import redisClient from "./cache";
 
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
@@ -14,12 +12,13 @@ import cartRoutes from "./routes/cartRoutes";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // CORS
 app.use(cors());
 // Middleware
 app.use(express.json());
+// Public folder
+app.use(express.static(__dirname + "/public"));
 
 // Routes
 app.use("/api/users", userRoutes);
@@ -30,15 +29,8 @@ app.use("/api/cart", cartRoutes);
 // Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.get("/", (req, res) => {
-    res.send({
-        message: "Welcome to the E-Commerce API",
-        documentation: "Swagger documentation is available at /api-docs"
-    });
-});
-
 // Start the server
-app.listen(PORT, async () => {
-    logger.info(`Server is running on http://localhost:${PORT}`);
+app.listen(process.env.PORT, async () => {
+    logger.info(`Server is running on ${process.env.HOST}:${process.env.PORT}`);
 });
 

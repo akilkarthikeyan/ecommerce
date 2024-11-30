@@ -15,7 +15,7 @@ const router = Router();
  *     parameters:
  *       - name: search
  *         in: query
- *         description: Search term to filter products by name or description
+ *         description: Search term to filter products by name or description or category
  *         required: false
  *         schema:
  *           type: string
@@ -67,12 +67,9 @@ router.get("/", productController.getAllProducts);
  *                 type: string
  *               price:
  *                 type: number
- *               stock:
- *                 type: number
  *             required:
  *               - name
  *               - price
- *               - stock
  *     responses:
  *       201:
  *         description: Product created successfully

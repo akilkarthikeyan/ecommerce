@@ -20,8 +20,8 @@ export async function getAllProducts(search: string): Promise<Product[]> {
 
 export async function createProduct(product: Product): Promise<Product> {
     try {
-        const query = 'INSERT INTO products (name, description, category, price, stock) VALUES (?, ?, ?, ?, ?)';
-        const values = [product.name, product.description || null, product.category, product.price, product.stock];
+        const query = 'INSERT INTO products (name, description, category, price) VALUES (?, ?, ?, ?)';
+        const values = [product.name, product.description || null, product.category, product.price];
         const [result] = await pool.query(query, values);
         const productId = (result as any).insertId;
         return getProductById(productId);
@@ -45,8 +45,8 @@ export async function getProductById(id: number): Promise<Product> {
 
 export async function updateProduct(id: number, product: Product): Promise<Product | null> {
     try {
-        const query = 'UPDATE products SET name = ?, description = ?, category = ?, price = ?, stock = ? WHERE id = ?';
-        const values = [product.name, product.description || null, product.category, product.price, product.stock, id];
+        const query = 'UPDATE products SET name = ?, description = ?, category = ?, price = ? WHERE id = ?';
+        const values = [product.name, product.description || null, product.category, product.price, id];
         const [result] = await pool.query(query, values);
         if ((result as any).affectedRows > 0) {
             return getProductById(id);
