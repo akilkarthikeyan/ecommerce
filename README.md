@@ -52,7 +52,7 @@ This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It
 4. **Set up the database:**
 
     - Create the database and tables by running the SQL script in `db_scripts/schema.sql`:
-
+     
     ```sh
     mysql -u your_db_user -p your_db_name < db_scripts/schema.sql
     ```
