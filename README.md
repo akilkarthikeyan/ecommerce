@@ -76,7 +76,7 @@ This is an E-Commerce API built with Node.js, Express, TypeScript, and MySQL. It
 ### Product Endpoints
 
 - **GET /api/products**: Get a list of all products
-- **GET /api/products?search=searchTerm**: Get list of products with name, descirption or category matching 'searchTerm'
+- **GET /api/products?search=searchTerm**: Get list of products with name, description or category matching 'searchTerm'
 - **POST /api/products**: Create a new product (requires admin role)
 - **PUT /api/products/:id**: Update a product (requires admin role)
 - **DELETE /api/products/:id**: Delete a product (requires admin role)
